@@ -8,6 +8,7 @@ const geocode = (address, callback) => {
             callback('Unable to connect to location services!', undefined)
         } else if (body.message === "Not Authorized - Invalid Token") {
             console.log(body);
+            console.log(address)
             callback('Unable to find location. Try another search.', undefined)
         } else {
             callback(undefined, {
