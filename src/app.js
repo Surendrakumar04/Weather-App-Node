@@ -50,10 +50,14 @@ app.get('/weather', async (req, res) => {
     }
     await geocode(req.query.address)
         .then(response => {
-            console.log(response)
+            if (response.error) {
+                return res.send({
+                    error: response.error
+                })
+            }
             forecast(response.latitude, response.longitude)
                 .then(forecastResponse => {
-                    const forecastString = 'It is currently ' + forecastResponse.temperature + ' degrees out. There is a ' + forecastResponse.description + '.';
+                    const forecastString = 'It is currently ' + forecastResponse.temperature + ' °C out. There is a ' + forecastResponse.description + '.';
                     res.send({
                         location: response.location,
                         forecast: forecastString,
