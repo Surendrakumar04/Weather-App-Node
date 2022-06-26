@@ -1,23 +1,21 @@
-const request = require('request')
+const axios = require('axios');
 
-const geocode = (address, callback) => {
-    const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'+address+'.json?access_token=pk.eyJ1Ijoic3VyaTc4NiIsImEiOiJja3p2dDNzaWQwOXZ2MnJsbHVvZzZtYjhwIn0.R940IvXtc187D21mZvqa1g&limit=2'
-
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            callback('Unable to connect to location services!', undefined)
-        } else if (body.message === "Not Authorized - Invalid Token") {
-            console.log(body);
-            console.log(address)
-            callback('Unable to find location. Try another search.', undefined)
-        } else {
-            callback(undefined, {
-                latitude: body.features[0].center[1],
-                longitude: body.features[0].center[0],
-                location: body.features[0].place_name
-            })
-        }
-    })
+async function geocode(address) {
+    const URL = 'https://nominatim.openstreetmap.org/?addressdetails=1&q=' + address + '&format=geocodejson';
+    var returnObject = {};
+    await axios.get(URL)
+        .then(response => {
+            const body = {
+                latitude: response.data.features[0].geometry.coordinates[1],
+                longitude: response.data.features[0].geometry.coordinates[0],
+                location: response.data.features[0].properties.geocoding.name
+            }
+            returnObject = body;
+        })
+        .catch(error => {
+            returnObject = error;
+        })
+    return returnObject;
 }
 
 module.exports = geocode
