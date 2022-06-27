@@ -20,17 +20,19 @@ hbs.registerPartials(partialsPath)
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 
+const profiles = [ 'suri0786', 'ayushbasak' ]
+
 app.get('', (req, res) => {
     res.render('index', {
         title: 'Weather Spark',
-        name: 'Surendra Kumar'
+        profiles
     })
 })
 
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About Me',
-        name: 'Surendra Kumar'
+        profiles
     })
 })
 
@@ -38,7 +40,7 @@ app.get('/help', (req, res) => {
     res.render('help', {
         helpText: 'WhatsApp Head office, Indra Vihar, 911035 Dhokla.',
         title: 'Help',
-        name: 'Surendra Kumar'
+        profiles
     })
 })
 
@@ -77,23 +79,10 @@ app.get('/weather', async (req, res) => {
         })
 })
 
-app.get('/products', (req, res) => {
-    if (!req.query.search) {
-        return res.send({
-            error: 'You must provide a search term'
-        })
-    }
-
-    console.log(req.query.search)
-    res.send({
-        products: []
-    })
-})
-
 app.get('/help/*', (req, res) => {
     res.render('404', {
         title: '404',
-        name: 'Surendra Kumar',
+        profiles,
         errorMessage: 'Help article not found.'
     })
 })
@@ -101,7 +90,7 @@ app.get('/help/*', (req, res) => {
 app.get('*', (req, res) => {
     res.render('404', {
         title: '404',
-        name: 'Surendra Kumar',
+        profiles,
         errorMessage: 'Page not found.'
     })
 })

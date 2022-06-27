@@ -1,3 +1,10 @@
 <footer>
-    <p>Created by {{name}}</p>
+    <div>
+        <span>
+            Created with 💖 by 
+            {{#each profiles }}
+                <span><a href="https://github.com/{{ this }}">{{ this }}</a></span>
+            {{/each }}
+        </span>
+    </div>
 </footer>
